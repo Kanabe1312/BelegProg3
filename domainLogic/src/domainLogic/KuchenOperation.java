@@ -1,6 +1,5 @@
 package domainLogic;
 
-import kuchen.Obstkuchen;
 import verwaltung.Hersteller;
 
 import java.util.ArrayList;
@@ -9,32 +8,32 @@ import java.util.List;
 
 public class KuchenOperation {
 
-    private final List<Kuchen> kuchenListe = new ArrayList<>();
+    private final List<ObstkuchenImpl> obstkuchenImplListe = new ArrayList<>();
     private final int kapazitaet;
     private final List<Hersteller> herstellerList = new ArrayList<>();
 
 
-    public boolean einfugen(Kuchen kuchen) {
-        if (kuchen == null) {
+    public boolean einfugen(ObstkuchenImpl obstkuchenImpl) {
+        if (obstkuchenImpl == null) {
             return false;
         }
 
-        if (kuchenListe.contains(kuchen)) {
+        if (obstkuchenImplListe.contains(obstkuchenImpl)) {
             return false;
         }
 
-        if (kuchenListe.size() >= kapazitaet) {
+        if (obstkuchenImplListe.size() >= kapazitaet) {
             return false;
         }
 
-        if (kuchen.getHersteller() == null || kuchen.getHersteller().getName() == null) {
+        if (obstkuchenImpl.getHersteller() == null || obstkuchenImpl.getHersteller().getName() == null) {
             return false;
         }
 
         boolean herstellerVorhanden = false;
 
         for (Hersteller hersteller : herstellerList) {
-            if (hersteller.getName() != null && hersteller.getName().equals(kuchen.getHersteller().getName())) {
+            if (hersteller.getName() != null && hersteller.getName().equals(obstkuchenImpl.getHersteller().getName())) {
                 herstellerVorhanden = true;
                 break;
             }
@@ -49,8 +48,8 @@ public class KuchenOperation {
         while (fachnummer <= kapazitaet) {
             boolean belegt = false;
 
-            for (Kuchen vorhandenerKuchen : kuchenListe) {
-                if (vorhandenerKuchen.getFachnummer() == fachnummer) {
+            for (ObstkuchenImpl vorhandenerObstkuchenImpl : obstkuchenImplListe) {
+                if (vorhandenerObstkuchenImpl.getFachnummer() == fachnummer) {
                     belegt = true;
                     break;
                 }
@@ -67,35 +66,35 @@ public class KuchenOperation {
             return false;
         }
 
-        kuchen.setFachnummer(fachnummer);
-        kuchen.setEinfuegedatum(new Date());
-        kuchenListe.add(kuchen);
+        obstkuchenImpl.setFachnummer(fachnummer);
+        obstkuchenImpl.setEinfuegedatum(new Date());
+        obstkuchenImplListe.add(obstkuchenImpl);
 
         return true;
     }
 
 
-    public boolean aendern(Kuchen kuchen,Date inspektionsDatum){
-        if(kuchen == null || inspektionsDatum == null){
+    public boolean aendern(ObstkuchenImpl obstkuchenImpl, Date inspektionsDatum){
+        if(obstkuchenImpl == null || inspektionsDatum == null){
             return false;
         }
-        if(!kuchenListe.contains(kuchen)){
+        if(!obstkuchenImplListe.contains(obstkuchenImpl)){
             return false;
         }
-        kuchen.setInspektionsdatum(inspektionsDatum);
+        obstkuchenImpl.setInspektionsdatum(inspektionsDatum);
         return true;
     }
 
-    public boolean loeschen(Kuchen kuchen) {
-        if (kuchen == null) {
+    public boolean loeschen(ObstkuchenImpl obstkuchenImpl) {
+        if (obstkuchenImpl == null) {
             return false;
         }
 
-        return kuchenListe.remove(kuchen);
+        return obstkuchenImplListe.remove(obstkuchenImpl);
     }
 
-    public Kuchen[]auflisten(){
-        return kuchenListe.toArray(new Kuchen[0]);
+    public ObstkuchenImpl[]auflisten(){
+        return obstkuchenImplListe.toArray(new ObstkuchenImpl[0]);
     }
 
     public KuchenOperation(int kapazitaet) {

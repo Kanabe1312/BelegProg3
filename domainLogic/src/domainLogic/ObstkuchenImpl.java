@@ -9,7 +9,7 @@ import java.util.Date;
 import java.time.Duration;
 import java.util.Collection;
 
-public class Kuchen implements Obstkuchen {
+public class ObstkuchenImpl implements Obstkuchen {
 
     private final Hersteller hersteller;
     private final Collection<Allergen> allergene;
@@ -22,8 +22,8 @@ public class Kuchen implements Obstkuchen {
     private Date inspektionsdatum;
     private int fachnummer;
 
-    public Kuchen(Hersteller hersteller,Collection<Allergen> allergene,int naehrwert,
-                  Duration haltbarkeit,BigDecimal preis,String obstsorte,Date einfuegedatum) {
+    public ObstkuchenImpl(Hersteller hersteller, Collection<Allergen> allergene, int naehrwert,
+                          Duration haltbarkeit, BigDecimal preis, String obstsorte, Date einfuegedatum) {
         this.hersteller = hersteller;
         this.allergene = allergene;
         this.naehrwert = naehrwert;
