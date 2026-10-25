@@ -9,7 +9,7 @@ import java.util.Date;
 import java.time.Duration;
 import java.util.Collection;
 
-public class ObstkuchenImpl implements Obstkuchen {
+public class ObstkuchenImpl implements Obstkuchen , VerwaltbarerKuchen{
 
     private final Hersteller hersteller;
     private final Collection<Allergen> allergene;
@@ -81,19 +81,22 @@ public class ObstkuchenImpl implements Obstkuchen {
     }
 
 
-
-    void setInspektionsdatum(Date inspektionsdatum) {
+    @Override
+    public void setInspektionsdatum(Date inspektionsdatum) {
         this.inspektionsdatum = inspektionsdatum;
     }
 
-    void setFachnummer(int fachnummer) {
+    @Override
+    public void setFachnummer(int fachnummer) {
         this.fachnummer = fachnummer;
     }
+
     public Date getEinfuegedatum() {
         return einfuegedatum;
     }
 
-    void setEinfuegedatum(Date einfuegedatum) {
+    @Override
+    public void setEinfuegedatum(Date einfuegedatum) {
         this.einfuegedatum = einfuegedatum;
     }
 

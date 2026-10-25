@@ -12,8 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class ObstkuchenImplOperationTest {
 
-    @Mock
-    private Obs
+
 
     @Mock
     private Kuchen kuchen;

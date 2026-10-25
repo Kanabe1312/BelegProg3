@@ -1,39 +1,38 @@
 package domainLogic;
 
+import kuchen.Allergen;
 import verwaltung.Hersteller;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class KuchenOperation {
 
-    private final List<ObstkuchenImpl> obstkuchenImplListe = new ArrayList<>();
+    private final List<VerwaltbarerKuchen> kuchenListe = new ArrayList<>();
     private final int kapazitaet;
     private final List<Hersteller> herstellerList = new ArrayList<>();
 
 
-    public boolean einfugen(ObstkuchenImpl obstkuchenImpl) {
-        if (obstkuchenImpl == null) {
+
+    public boolean einfugen(VerwaltbarerKuchen kuchen) {
+        if (kuchen == null) {
             return false;
         }
-
-        if (obstkuchenImplListe.contains(obstkuchenImpl)) {
+        if (kuchenListe.contains(kuchen)) {
             return false;
         }
-
-        if (obstkuchenImplListe.size() >= kapazitaet) {
+        if (kuchenListe.size() >= kapazitaet) {
             return false;
         }
-
-        if (obstkuchenImpl.getHersteller() == null || obstkuchenImpl.getHersteller().getName() == null) {
+        if (kuchen.getHersteller() == null
+                || kuchen.getHersteller().getName() == null) {
             return false;
         }
 
         boolean herstellerVorhanden = false;
 
         for (Hersteller hersteller : herstellerList) {
-            if (hersteller.getName() != null && hersteller.getName().equals(obstkuchenImpl.getHersteller().getName())) {
+            if (hersteller.getName() != null
+                    && hersteller.getName().equals(kuchen.getHersteller().getName())) {
                 herstellerVorhanden = true;
                 break;
             }
@@ -44,21 +43,18 @@ public class KuchenOperation {
         }
 
         int fachnummer = 1;
-
         while (fachnummer <= kapazitaet) {
             boolean belegt = false;
 
-            for (ObstkuchenImpl vorhandenerObstkuchenImpl : obstkuchenImplListe) {
-                if (vorhandenerObstkuchenImpl.getFachnummer() == fachnummer) {
+            for (VerwaltbarerKuchen vorhandenerKuchen : kuchenListe) {
+                if (vorhandenerKuchen.getFachnummer() == fachnummer) {
                     belegt = true;
                     break;
                 }
             }
-
             if (!belegt) {
                 break;
             }
-
             fachnummer++;
         }
 
@@ -66,35 +62,51 @@ public class KuchenOperation {
             return false;
         }
 
-        obstkuchenImpl.setFachnummer(fachnummer);
-        obstkuchenImpl.setEinfuegedatum(new Date());
-        obstkuchenImplListe.add(obstkuchenImpl);
-
+        kuchen.setFachnummer(fachnummer);
+        kuchen.setEinfuegedatum(new Date());
+        kuchenListe.add(kuchen);
         return true;
     }
 
 
-    public boolean aendern(ObstkuchenImpl obstkuchenImpl, Date inspektionsDatum){
-        if(obstkuchenImpl == null || inspektionsDatum == null){
+    public VerwaltbarerKuchen[] auflisten(Class<?> kuchensorte) {
+        if (kuchensorte == null) {
+            return auflisten();
+        }
+
+        List<VerwaltbarerKuchen> gefiltert = new ArrayList<>();
+
+        for (VerwaltbarerKuchen kuchen : kuchenListe) {
+            if (kuchensorte.isInstance(kuchen)) {
+                gefiltert.add(kuchen);
+            }
+        }
+
+        return gefiltert.toArray(new VerwaltbarerKuchen[0]);
+    }
+
+
+    public boolean aendern(VerwaltbarerKuchen kuchen, Date inspektionsDatum) {
+        if (kuchen == null || inspektionsDatum == null) {
             return false;
         }
-        if(!obstkuchenImplListe.contains(obstkuchenImpl)){
+        if (!kuchenListe.contains(kuchen)) {
             return false;
         }
-        obstkuchenImpl.setInspektionsdatum(inspektionsDatum);
+        kuchen.setInspektionsdatum(inspektionsDatum);
         return true;
     }
 
-    public boolean loeschen(ObstkuchenImpl obstkuchenImpl) {
-        if (obstkuchenImpl == null) {
+    public boolean loeschen(VerwaltbarerKuchen kuchen) {
+        if (kuchen == null) {
             return false;
         }
 
-        return obstkuchenImplListe.remove(obstkuchenImpl);
+        return kuchenListe.remove(kuchen);
     }
 
-    public ObstkuchenImpl[]auflisten(){
-        return obstkuchenImplListe.toArray(new ObstkuchenImpl[0]);
+    public VerwaltbarerKuchen[] auflisten() {
+        return kuchenListe.toArray(new VerwaltbarerKuchen[0]);
     }
 
     public KuchenOperation(int kapazitaet) {
@@ -120,6 +132,86 @@ public class KuchenOperation {
         }
 
         herstellerList.add(hersteller);
+        return true;
+    }
+
+
+    //ChatGpt
+
+    public Map<Hersteller, Integer> herstellerAuflisten() {
+        Map<Hersteller, Integer> ergebnis = new LinkedHashMap<>();
+
+        for (Hersteller hersteller : herstellerList) {
+            ergebnis.put(hersteller, 0);
+        }
+
+        for (VerwaltbarerKuchen kuchen : kuchenListe) {
+            Hersteller hersteller = kuchen.getHersteller();
+
+            for (Hersteller registriert : herstellerList) {
+                if (registriert.getName().equals(hersteller.getName())) {
+                    ergebnis.put(registriert, ergebnis.get(registriert) + 1);
+                    break;
+                }
+            }
+        }
+
+        return ergebnis;
+    }
+
+    public Set<Allergen> allergeneVorhanden() {
+        Set<Allergen> vorhanden = new HashSet<>();
+
+        for (VerwaltbarerKuchen kuchen : kuchenListe) {
+            Collection<Allergen> allergene = kuchen.getAllergene();
+
+            if (allergene != null) {
+                vorhanden.addAll(allergene);
+            }
+        }
+
+        return vorhanden;
+    }
+
+    public Set<Allergen> allergeneAbwesend() {
+        Set<Allergen> abwesend = new HashSet<>();
+
+        for (Allergen allergen : Allergen.values()) {
+            abwesend.add(allergen);
+        }
+
+        abwesend.removeAll(allergeneVorhanden());
+
+        return abwesend;
+    }
+
+    public boolean herstellerLoeschen(Hersteller hersteller) {
+        if (hersteller == null || hersteller.getName() == null) {
+            return false;
+        }
+
+        Hersteller registrierterHersteller = null;
+
+        for (Hersteller vorhandenerHersteller : herstellerList) {
+            if (vorhandenerHersteller.getName().equals(hersteller.getName())) {
+                registrierterHersteller = vorhandenerHersteller;
+                break;
+            }
+        }
+
+        if (registrierterHersteller == null) {
+            return false;
+        }
+
+        String herstellerName = registrierterHersteller.getName();
+
+        kuchenListe.removeIf(kuchen ->
+                kuchen.getHersteller() != null
+                        && kuchen.getHersteller().getName() != null
+                        && kuchen.getHersteller().getName().equals(herstellerName)
+        );
+
+        herstellerList.remove(registrierterHersteller);
         return true;
     }
 
