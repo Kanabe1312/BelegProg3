@@ -23,21 +23,17 @@ public class KuchenOperation {
         if (kuchenListe.size() >= kapazitaet) {
             return false;
         }
-        if (kuchen.getHersteller() == null
-                || kuchen.getHersteller().getName() == null) {
+        if (kuchen.getHersteller() == null|| kuchen.getHersteller().getName() == null) {
             return false;
         }
-
         boolean herstellerVorhanden = false;
 
         for (Hersteller hersteller : herstellerList) {
-            if (hersteller.getName() != null
-                    && hersteller.getName().equals(kuchen.getHersteller().getName())) {
+            if (hersteller.getName() != null && hersteller.getName().equals(kuchen.getHersteller().getName())) {
                 herstellerVorhanden = true;
                 break;
             }
         }
-
         if (!herstellerVorhanden) {
             return false;
         }
@@ -68,7 +64,7 @@ public class KuchenOperation {
         return true;
     }
 
-
+//Chatgpt
     public VerwaltbarerKuchen[] auflisten(Class<?> kuchensorte) {
         if (kuchensorte == null) {
             return auflisten();
@@ -109,15 +105,15 @@ public class KuchenOperation {
         return kuchenListe.toArray(new VerwaltbarerKuchen[0]);
     }
 
+    public int getKapazitaet(){
+        return kapazitaet;
+    }
+
     public KuchenOperation(int kapazitaet) {
         if (kapazitaet < 0) {
             throw new IllegalArgumentException("Kapazitaet darf nicht negativ sein.");
         }
         this.kapazitaet = kapazitaet;
-    }
-
-    public int getKapazitaet(){
-        return kapazitaet;
     }
 
     public boolean herstellerEinfuegen(Hersteller hersteller) {
@@ -130,7 +126,6 @@ public class KuchenOperation {
                 return false;
             }
         }
-
         herstellerList.add(hersteller);
         return true;
     }
@@ -184,12 +179,11 @@ public class KuchenOperation {
 
         return abwesend;
     }
-
+    //ChatGpt
     public boolean herstellerLoeschen(Hersteller hersteller) {
         if (hersteller == null || hersteller.getName() == null) {
             return false;
         }
-
         Hersteller registrierterHersteller = null;
 
         for (Hersteller vorhandenerHersteller : herstellerList) {
@@ -205,10 +199,8 @@ public class KuchenOperation {
 
         String herstellerName = registrierterHersteller.getName();
 
-        kuchenListe.removeIf(kuchen ->
-                kuchen.getHersteller() != null
-                        && kuchen.getHersteller().getName() != null
-                        && kuchen.getHersteller().getName().equals(herstellerName)
+        kuchenListe.removeIf(kuchen -> kuchen.getHersteller() != null && kuchen.getHersteller().getName() != null
+                && kuchen.getHersteller().getName().equals(herstellerName)
         );
 
         herstellerList.remove(registrierterHersteller);
