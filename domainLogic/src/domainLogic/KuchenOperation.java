@@ -64,7 +64,7 @@ public class KuchenOperation {
         return true;
     }
 
-//Chatgpt
+    //QUELLE : OpenAI Gpt-6,26.10.2026
     public VerwaltbarerKuchen[] auflisten(Class<?> kuchensorte) {
         if (kuchensorte == null) {
             return auflisten();
@@ -80,7 +80,7 @@ public class KuchenOperation {
 
         return gefiltert.toArray(new VerwaltbarerKuchen[0]);
     }
-
+    // QUELLE ENDE
 
     public boolean aendern(VerwaltbarerKuchen kuchen, Date inspektionsDatum) {
         if (kuchen == null || inspektionsDatum == null) {
@@ -131,7 +131,7 @@ public class KuchenOperation {
     }
 
 
-    //ChatGpt
+    //QUELLE : OpenAI Gpt-6,26.10.2026
 
     public Map<Hersteller, Integer> herstellerAuflisten() {
         Map<Hersteller, Integer> ergebnis = new LinkedHashMap<>();
@@ -153,6 +153,7 @@ public class KuchenOperation {
 
         return ergebnis;
     }
+    // QUELLE ENDE
 
     public Set<Allergen> allergeneVorhanden() {
         Set<Allergen> vorhanden = new HashSet<>();
@@ -179,7 +180,8 @@ public class KuchenOperation {
 
         return abwesend;
     }
-    //ChatGpt
+
+    //QUELLE : OpenAI Gpt-6,26.10.2026
     public boolean herstellerLoeschen(Hersteller hersteller) {
         if (hersteller == null || hersteller.getName() == null) {
             return false;
@@ -206,6 +208,7 @@ public class KuchenOperation {
         herstellerList.remove(registrierterHersteller);
         return true;
     }
+    // QUELLE ENDE
 
 
 
